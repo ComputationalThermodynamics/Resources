@@ -1,0 +1,1042 @@
+#
+ ====================================================================
+ Ultramafic set in FMASOSH
+
+ use with tc-ds633.txt
+          tc350 and upwards
+
+ File history:
+ - Based on a 2012 RP-constructed axfile in CFMASHO for Rebay,
+      Powell & Holland (unpubl.) - referred to as RPH below
+ - This axfile was used by Evans & Powell (2015) JMG 33, 649-670,
+      and Evans & Frost (2021) JPet, ##, ## - referred to as
+      EP and EF below
+
+ phases:fluid ol br ch atg g ta chl anth spi opx po
+ =================================================================
+#
+#
+ =================================================================
+fluid: OH
+
+ Ideal mixing
+
+ E-m  Formula  Mixing site
+						   H2   H2O
+	H2		H2			1	  	0
+	H2O		H2O			0	  	1
+
+ x -> xH2
+ --------------------------------------------------
+#
+
+ starting guesses
+  x(fluid) = 0.00001 range 0 <> 0.01
+  
+ labels (assign first label for which condition is true)
+  fluid : fl : true
+
+ site fractions
+   x(H2) = x
+   x(H2O) = 1 - x
+
+ proportions
+   H2 = x
+   H2O = 1 - x
+
+ ideal mixing activities
+  H2 = x(H2)
+  H2O = x(H2O)
+
+ non-ideality hard-wired
+
+#
+ =================================================================
+ olivine: FMS
+
+ Holland, TJB & Powell, R (2011). An improved and extended internally
+ consistent thermodynamic dataset for phases of petrological interest,
+ involving a new equation of state for solids. JMG, 29, 333-383.
+
+  E-m    Formula     Mixing sites
+                     M
+                     Mg    Fe
+ fa      Fe2SiO4     0     2
+ fo      Mg2SiO4     2     0
+
+ x = Fe/(Fe+Mg)
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(ol) = 0.10000 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  olivine : ol : true
+
+ site fractions
+   x(Mg) = 1 - x
+   x(Fe) = x
+
+ proportions
+   fo = 1 - x
+   fa = x
+
+ ideal mixing activities
+  fo = x(Mg)**2
+  fa = x(Fe)**2
+
+ non-ideality by symmetric formalism
+  W(fo,fa) = 8
+
+#
+ =================================================================
+ brucite: FM
+
+ Evans K.A., Powell, R. & Frost, B.R. (2013). Using equilibrium
+ thermodynamics in the study of metasomatic alteration, illustrated
+ by an application to serpentinites. Lithos 168-169, 67-84.
+
+  E-m    Formula     Mixing sites
+                     M
+                     Mg    Fe
+ br       Mg(OH)2     1     0
+ fbr      Fe(OH)2     0     1
+
+ x = Fe/(Fe+Mg)
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(br) = 0.20000 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  brucite : br : true
+
+ site fractions
+   x(Mg) = 1 - x
+   x(Fe) = x
+
+ proportions
+   br = 1 - x
+   fbr = x
+
+ ideal mixing activities
+  br = x(Mg)
+  fbr = x(Fe)
+
+ non-ideality hard-wired
+
+ "make" end-members
+  fbr = br - 1/2*fo + 1/2*fa + 2  (make)
+
+#
+ =================================================================
+ clinohumite: FMSOH
+
+ rp coded 10.01.13 for RPH; used in EP and EF
+
+  E-m    Formula     		Mixing sites
+                     			M
+                     			Mg		Fe
+ chum    Mg9Si4O16(OH)2     9     0
+ chuf    Fe9Si4O16(OH)2     0		 9
+
+ x = Fe/(Fe+Mg)
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(ch) = 0.090000 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  clinohumite : ch : true
+
+ site fractions
+   x(Mg) = 1 - x
+   x(Fe) = x
+
+ proportions
+   chum = 1 - x
+   chuf = x
+
+ ideal mixing activities
+  chum = x(Mg)**9
+  chuf = x(Fe)**9
+
+ non-ideality by symmetric formalism
+  W(chum,chuf) = 36
+
+ "make" end-members
+  chuf = chum - 9/2*fo + 9/2*fa - 5  (make)
+
+#
+ =================================================================
+ atg: FMASHO
+
+ rp coded by axe attack on 11 June 2012 for RPH; used in EP and EF
+
+         M1                        M2            T
+         Mg    Fe    Fe3   Al      Mg    Fe      Si    Al
+ atg     1     0     0     0       2     0       2     0
+ fatg    0     1     0     0       0     2       2     0
+ atgo    0     1     0     0       2     0       2     0
+ aatg    0     0     0     1       2     0       1     1
+ oatg    0     0     1     0       2     0       1     1
+
+               xFeM1 + 2 xFeM2
+ x -> ---------------------------------
+      xFeM1 + 2 xFeM2 + xMgM1 + 2 xMgM2
+
+ y -> xAlM1
+
+ f -> xFe3M1
+
+              xFeM1
+ Q -> x - -------------
+          xFeM1 + xMgM1
+ -------------------------------------------------------------------
+#
+
+ starting guesses
+  x(atg) = 0.050000 range 0 <> 1
+  y(atg) = 0.020000 range 0 <> 1
+  f(atg) = 0.010000 range 0 <> 1
+  Q(atg) = 0.10000 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  antigorite : atg : true
+
+ site fractions
+   xMgM1 = 1 - f + Q - x - y + (-f)*Q + f*x + (-Q)*y + x*y
+   xFeM1 = -Q + x + f*Q + (-f)*x + Q*y + (-x)*y
+   xFe3M1 = f
+   xAlM1 = y
+   xMgM2 = 1 - 1/2*Q - x + 1/2*f*Q + 1/2*Q*y
+   xFeM2 = 1/2*Q + x + (-1/2*f)*Q + (-1/2*Q)*y
+   xSiT = 1 - 1/2*f - 1/2*y
+   xAlT = 1/2*f + 1/2*y
+
+ proportions
+   atgf = 1 - f + Q - x - y + (-f)*Q + f*x + (-Q)*y + x*y
+   fatg = 1/2*Q + x + (-1/2*f)*Q + (-1/2*Q)*y
+   atgo = -3/2*Q + 3/2*f*Q + (-f)*x + 3/2*Q*y + (-x)*y
+   aatg = y
+   oatg = f
+
+ ideal mixing activities
+  atgf = xMgM1*xMgM2**2*xSiT**2
+  fatg = xFeM1*xFeM2**2*xSiT**2
+  atgo = xFeM1*xMgM2**2*xSiT**2
+  aatg = 4*xAlM1*xMgM2**2*xSiT*xAlT
+  oatg = 4*xFe3M1*xMgM2**2*xSiT*xAlT
+
+ non-ideality by symmetric formalism
+  W(atgf,fatg) = 12
+  W(atgf,atgo) = 4
+  W(atgf,aatg) = 10
+  W(atgf,oatg) = 8
+  W(fatg,atgo) = 8
+  W(fatg,aatg) = 15
+  W(fatg,oatg) = 13.6
+  W(atgo,aatg) = 7
+  W(atgo,oatg) = 5.6
+  W(aatg,oatg) = 2
+
+ "make" end-members
+  atgf = 1/16*atg
+  fatg = 1/16*atg - ta + fta - 28  (make)
+  atgo = 3/48*atg - 16/48*ta + 16/48*fta - 11.33  (od)
+  aatg = 1/16*atg - ta + tats - 36  (make)
+  oatg = 1/16*atg - ta + tats - 8/16*gr + 8/16*andr - 5  (make)
+
+#
+ =================================================================
+ garnet: alm-py
+
+ Holland, TJB, Green, ECR & Powell, R (2018). Melting of peridotites
+ through to granites: a simple thermodynamic model in the system
+ KNCFMASHTOCr. Journal of Petrology, 59, 881-900.
+
+ rp reduced to FM 12-5-21
+
+ E-m    Formula             Mixing sites
+                            M1
+                            Mg   Fe
+ py    Mg3Al2Si3O12         3     0
+ alm   Fe3Al2Si3O12         0     3
+
+ x -> xFeM1/(xFeM1 + xMgM1)
+ --------------------------------------------------
+#
+
+ starting guesses
+  x(g) = 0.30000 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  garnet : g : true
+
+ site fractions
+   xMgM1 = 1 - x
+   xFeM1 = x
+
+ proportions
+   py = 1 - x
+   alm = x
+
+ ideal mixing activities
+  py = xMgM1**3
+  alm = xFeM1**3
+
+ non-ideality by symmetric formalism
+  W(py,alm) = 4 + 0.1*P
+
+#
+ =================================================================
+ ta: FMASHO - full od with tap
+
+ rp coded by axe attack on 11 June 2012 for RPH; used in EP and EF
+
+         M1                  M23                       T2
+         Mg    Fe    v       Mg    Fe    Fe3   Al      Si    Al
+ ta      1     0     0       2     0     0     0       2     0
+ fta     0     1     0       0     2     0     0       2     0
+ tao     1     0     0       0     2     0     0       2     0
+ tats    1     0     0       1     0     0     1       1     1
+ ota     1     0     0       1     0     1     0       1     1
+ tap     0     0     1       0     0     0     2       2     0
+ -------------------------------------------------
+
+               xFeM1 + 2 xFeM23
+ x -> -----------------------------------
+      xFeM1 + 2 xFeM23 + xMgM1 + 2 xMgM23
+
+ y -> xAlM23
+
+ f -> xFe3M23
+
+ v -> xvM1
+
+              xFeM1
+ Q -> x - -------------
+          xFeM1 + xMgM1
+ -------------------------------------------------------------------
+#
+
+ starting guesses
+  x(ta) = 0.15000 range 0 <> 1
+  y(ta) = 0.040000 range 0 <> 1
+  f(ta) = 0.010000 range 0 <> 1
+  v(ta) = 0.010000 range 0 <> 1
+  Q(ta) = 0.040000 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  talc : ta : true
+
+ site fractions
+   xMgM1 = 1 - v + Q - x + (-v)*Q + v*x
+   xFeM1 = -Q + x + v*Q + (-v)*x
+   xvM1 = v
+   xMgM23 = 1 - 1/2*Q - f - x - y + 1/2*v*Q + f*x + x*y
+   xFeM23 = 1/2*Q + x + (-1/2*v)*Q + (-f)*x + (-x)*y
+   xFe3M23 = f
+   xAlM23 = y
+   xSiT2 = 1 - f + v - y
+   xAlT2 = f - v + y
+
+ proportions
+   ta = 1 - 1/2*Q + v - x - 2*f - 2*y + 1/2*v*Q + f*x + x*y
+   fta = -Q + x + v*Q + (-v)*x
+   tao = 3/2*Q + (-3/2*v)*Q + (-f)*x + v*x + (-x)*y
+   tats = -2*v + 2*y
+   ota = 2*f
+   tap = v
+
+ ideal mixing activities
+  ta = xMgM1*xMgM23**2*xSiT2**2
+  fta = xFeM1*xFeM23**2*xSiT2**2
+  tao = xMgM1*xFeM23**2*xSiT2**2
+  tats = 16*xMgM1*xMgM23*xAlM23*xSiT2*xAlT2
+  ota = 16*xMgM1*xMgM23*xFe3M23*xSiT2*xAlT2
+  tap = xvM1*xAlM23**2*xSiT2**2
+
+ non-ideality by symmetric formalism
+  W(ta,fta) = 12
+  W(ta,tao) = 8
+  W(ta,tats) = 10
+  W(ta,ota) = 9.5
+  W(ta,tap) = 55
+  W(fta,tao) = 4
+  W(fta,tats) = 16.5
+  W(fta,ota) = 16.3
+  W(fta,tap) = 43
+  W(tao,tats) = 12.5
+  W(tao,ota) = 12.3
+  W(tao,tap) = 52
+  W(tats,ota) = 0.5
+  W(tats,tap) = 65
+  W(ota,tap) = 66.5
+
+ "make" end-members
+  tao = 2/3*fta + 1/3*ta - 2  (od)
+  ota = tats - 1/2*gr + 1/2*andr + 4  (make)
+
+#
+ =================================================================
+ chl: FMASHO
+
+ White, R.W., Powell, R., Holland, T.J.B., Johnson, T.E. and Green, E.C.R.
+ (2014), New mineral activity?composition relations for thermodynamic
+ calculations in metapelitic systems. JMG, 32: 261-286.
+
+ f3clin in White et al. (2014) does not work for sub-aluminous chlorite:
+ KT value from 1st Oct 2013, used in EP and EF
+
+         M1                        M23                 M4                        T2
+         Mg    Mn    Fe    Al      Mg    Mn    Fe      Mg    Fe    Fe3   Al      Si    Al
+ clin    1     0     0     0       4     0     0       0     0     0     1       1     1
+ afchl   1     0     0     0       4     0     0       1     0     0     0       2     0
+ ames    0     0     0     1       4     0     0       0     0     0     1       0     2
+ daph    0     0     1     0       0     0     4       0     0     0     1       1     1
+ ochl1   1     0     0     0       0     0     4       0     1     0     0       2     0
+ ochl4   0     0     1     0       4     0     0       1     0     0     0       2     0
+ f3clin  1     0     0     0       4     0     0       0     0     1     0       1     1
+ mnchl   0     1     0     0       0     4     0       0     0     0     1       1     1
+
+                   xFeM1 + 4 xFeM23 + xFeM4
+ x -> ---------------------------------------------------
+      xFeM1 + 4 xFeM23 + xFeM4 + xMgM1 + 4 xMgM23 + xMgM4
+
+      xAlM1 + xAlM4
+ y -> -------------
+            2
+
+ f -> xFe3M4
+
+ m -> xMnM23
+
+        -xAlM1 + xAlM4
+ qa1 -> --------------
+              2
+
+               xFeM1
+ Q1 -> x - -------------
+           xFeM1 + xMgM1
+
+               xFeM4
+ Q4 -> x - -------------
+           xFeM4 + xMgM4
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(chl) = 0.30000 range 0 <> 1
+  y(chl) = 0.55000 range 0 <> 1
+  f(chl) = 0.0010000 range 0 <> 1
+  m(chl) = 0.0010000 range 0 <> 1
+  qa1(chl) = 0.42000 range 0 <> 1  order variable
+  Q1(chl) = -0.18000 range -1 <> 1  order variable
+  Q4(chl) = -0.26000 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  chlorite : chl : true
+
+ site fractions
+   xMgM1 = 1 - m + Q1 + qa1 - x - y + (-m)*Q1 + Q1*qa1 + m*x + (-qa1)*x + (-Q1)*y + x*y
+   xMnM1 = m
+   xFeM1 = -Q1 + x + m*Q1 + (-Q1)*qa1 + (-m)*x + qa1*x + Q1*y + (-x)*y
+   xAlM1 = -qa1 + y
+   xMgM23 = 1 - 1/4*Q1 - 1/4*Q4 - m - x + 1/4*m*Q1 + 1/4*f*Q4 + (-1/4*Q1)*qa1 + 1/4*Q4*qa1 + m*x + 1/4*Q1*y + 1/4*Q4*y
+   xMnM23 = m
+   xFeM23 = 1/4*Q1 + 1/4*Q4 + x + (-1/4*m)*Q1 + (-1/4*f)*Q4 + 1/4*Q1*qa1 + (-1/4*Q4)*qa1 + (-m)*x + (-1/4*Q1)*y + (-1/4*Q4)*y
+   xMgM4 = 1 - f + Q4 - qa1 - x - y + (-f)*Q4 + (-Q4)*qa1 + f*x + qa1*x + (-Q4)*y + x*y
+   xFeM4 = -Q4 + x + f*Q4 + Q4*qa1 + (-f)*x + (-qa1)*x + Q4*y + (-x)*y
+   xFe3M4 = f
+   xAlM4 = qa1 + y
+   xSiT2 = 1 - 1/2*f - y
+   xAlT2 = 1/2*f + y
+
+ proportions
+   clin = -1/4*Q1 - m + 2qa1 - 5/4*Q4 + 1/4*m*Q1 + 5/4*f*Q4 + (-1/4*Q1)*qa1 + 5/4*Q4*qa1 + (-f)*x + m*x + (-qa1)*x + 1/4*Q1*y + 5/4*Q4*y + (-x)*y
+   afchl = 1 - f - qa1 - y - 2x + 5/4*Q1 + 9/4*Q4 + (-5/4*m)*Q1 + (-9/4*f)*Q4 + 5/4*Q1*qa1 + (-9/4*Q4)*qa1 + 2f*x + qa1*x + (-5/4*Q1)*y + (-9/4*Q4)*y + 3x*y
+   ames = -qa1 + y
+   daph = 1/4*Q1 + 5/4*Q4 + (-1/4*m)*Q1 + (-5/4*f)*Q4 + 1/4*Q1*qa1 + (-5/4*Q4)*qa1 + f*x + (-m)*x + qa1*x + (-1/4*Q1)*y + (-5/4*Q4)*y + x*y
+   ochl1 = -Q4 + x + f*Q4 + Q4*qa1 + (-f)*x + (-qa1)*x + Q4*y + (-x)*y
+   ochl4 = x - 5/4*Q1 - 5/4*Q4 + 5/4*m*Q1 + 5/4*f*Q4 + (-5/4*Q1)*qa1 + 5/4*Q4*qa1 + (-f)*x + 5/4*Q1*y + 5/4*Q4*y + (-2x)*y
+   f3clin = f
+   mnchl = m
+
+ ideal mixing activities
+  clin = 4*xMgM1*xMgM23**4*xAlM4*xSiT2*xAlT2
+  afchl = xMgM1*xMgM23**4*xMgM4*xSiT2**2
+  ames = xAlM1*xMgM23**4*xAlM4*xAlT2**2
+  daph = 4*xFeM1*xFeM23**4*xAlM4*xSiT2*xAlT2
+  ochl1 = xMgM1*xFeM23**4*xFeM4*xSiT2**2
+  ochl4 = xFeM1*xMgM23**4*xMgM4*xSiT2**2
+  f3clin = 4*xMgM1*xMgM23**4*xFe3M4*xSiT2*xAlT2
+  mnchl = 4*xMnM1*xMnM23**4*xAlM4*xSiT2*xAlT2
+
+ non-ideality by symmetric formalism
+  W(clin,afchl) = 17
+  W(clin,ames) = 17
+  W(clin,daph) = 20
+  W(clin,ochl1) = 30
+  W(clin,ochl4) = 21
+  W(clin,f3clin) = 2
+  W(clin,mnchl) = 6
+  W(afchl,ames) = 16
+  W(afchl,daph) = 37
+  W(afchl,ochl1) = 20
+  W(afchl,ochl4) = 4
+  W(afchl,f3clin) = 15
+  W(afchl,mnchl) = 23
+  W(ames,daph) = 30
+  W(ames,ochl1) = 29
+  W(ames,ochl4) = 13
+  W(ames,f3clin) = 19
+  W(ames,mnchl) = 17
+  W(daph,ochl1) = 18
+  W(daph,ochl4) = 33
+  W(daph,f3clin) = 22
+  W(daph,mnchl) = 4
+  W(ochl1,ochl4) = 24
+  W(ochl1,f3clin) = 28.6
+  W(ochl1,mnchl) = 19
+  W(ochl4,f3clin) = 19
+  W(ochl4,mnchl) = 22
+  W(f3clin,mnchl) = 8
+
+ "make" end-members
+  ochl1 = afchl - clin + daph + 3  (od)
+  ochl4 = afchl - 1/5*clin + 1/5*daph + 2.4  (od)
+  f3clin = clin - 1/2*gr + 1/2*andr + 40  (make)
+  
+#
+ =================================================================
+ chlb: FMASHO
+
+ White, R.W., Powell, R., Holland, T.J.B., Johnson, T.E. and Green, E.C.R.
+ (2014), New mineral activity?composition relations for thermodynamic
+ calculations in metapelitic systems. JMG, 32: 261-286.
+
+ f3clin in White et al. (2014) does not work for sub-aluminous chlorite:
+ KT value from 1st Oct 2013, used in EP and EF
+
+         M1                        M23                 M4                        T2
+         Mg    Mn    Fe    Al      Mg    Mn    Fe      Mg    Fe    Fe3   Al      Si    Al
+ clin    1     0     0     0       4     0     0       0     0     0     1       1     1
+ afchl   1     0     0     0       4     0     0       1     0     0     0       2     0
+ ames    0     0     0     1       4     0     0       0     0     0     1       0     2
+ daph    0     0     1     0       0     0     4       0     0     0     1       1     1
+ ochl1   1     0     0     0       0     0     4       0     1     0     0       2     0
+ ochl4   0     0     1     0       4     0     0       1     0     0     0       2     0
+ f3clin  1     0     0     0       4     0     0       0     0     1     0       1     1
+ mnchl   0     1     0     0       0     4     0       0     0     0     1       1     1
+
+                   xFeM1 + 4 xFeM23 + xFeM4
+ x -> ---------------------------------------------------
+      xFeM1 + 4 xFeM23 + xFeM4 + xMgM1 + 4 xMgM23 + xMgM4
+
+      xAlM1 + xAlM4
+ y -> -------------
+            2
+
+ f -> xFe3M4
+
+ m -> xMnM23
+
+        -xAlM1 + xAlM4
+ qa1 -> --------------
+              2
+
+               xFeM1
+ Q1 -> x - -------------
+           xFeM1 + xMgM1
+
+               xFeM4
+ Q4 -> x - -------------
+           xFeM4 + xMgM4
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(chlb) = 0.30000 range 0 <> 1
+  y(chlb) = 0.55000 range 0 <> 1
+  f(chlb) = 0.0010000 range 0 <> 1
+  qa1(chlb) = 0.42000 range 0 <> 1  order variable
+  Q1(chlb) = -0.18000 range -1 <> 1  order variable
+  Q4(chlb) = -0.26000 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  chloriteb : chlb : true
+
+ site fractions
+   xMgM1 = 1 + Q1 + qa1 - x - y  + Q1*qa1 + (-qa1)*x + (-Q1)*y + x*y
+   xFeM1 = -Q1 + x + (-Q1)*qa1 + qa1*x + Q1*y + (-x)*y
+   xAlM1 = -qa1 + y
+   xMgM23 = 1 - 1/4*Q1 - 1/4*Q4 - x + 1/4*f*Q4 + (-1/4*Q1)*qa1 + 1/4*Q4*qa1 + 1/4*Q1*y + 1/4*Q4*y
+   xFeM23 = 1/4*Q1 + 1/4*Q4 + x + (-1/4*f)*Q4 + 1/4*Q1*qa1 + (-1/4*Q4)*qa1 + (-1/4*Q1)*y + (-1/4*Q4)*y
+   xMgM4 = 1 - f + Q4 - qa1 - x - y + (-f)*Q4 + (-Q4)*qa1 + f*x + qa1*x + (-Q4)*y + x*y
+   xFeM4 = -Q4 + x + f*Q4 + Q4*qa1 + (-f)*x + (-qa1)*x + Q4*y + (-x)*y
+   xFe3M4 = f
+   xAlM4 = qa1 + y
+   xSiT2 = 1 - 1/2*f - y
+   xAlT2 = 1/2*f + y
+
+ proportions
+   clin = -1/4*Q1 + 2qa1 - 5/4*Q4 + 5/4*f*Q4 + (-1/4*Q1)*qa1 + 5/4*Q4*qa1 + (-f)*x + (-qa1)*x + 1/4*Q1*y + 5/4*Q4*y + (-x)*y
+   afchl = 1 - f - qa1 - y - 2x + 5/4*Q1 + 9/4*Q4 + (-9/4*f)*Q4 + 5/4*Q1*qa1 + (-9/4*Q4)*qa1 + 2f*x + qa1*x + (-5/4*Q1)*y + (-9/4*Q4)*y + 3x*y
+   ames = -qa1 + y
+   daph = 1/4*Q1 + 5/4*Q4 + (-5/4*f)*Q4 + 1/4*Q1*qa1 + (-5/4*Q4)*qa1 + f*x + qa1*x + (-1/4*Q1)*y + (-5/4*Q4)*y + x*y
+   ochl1 = -Q4 + x + f*Q4 + Q4*qa1 + (-f)*x + (-qa1)*x + Q4*y + (-x)*y
+   ochl4 = x - 5/4*Q1 - 5/4*Q4 + 5/4*f*Q4 + (-5/4*Q1)*qa1 + 5/4*Q4*qa1 + (-f)*x + 5/4*Q1*y + 5/4*Q4*y + (-2x)*y
+   f3clin = f
+
+ ideal mixing activities
+  clin = 4*xMgM1*xMgM23**4*xAlM4*xSiT2*xAlT2
+  afchl = xMgM1*xMgM23**4*xMgM4*xSiT2**2
+  ames = xAlM1*xMgM23**4*xAlM4*xAlT2**2
+  daph = 4*xFeM1*xFeM23**4*xAlM4*xSiT2*xAlT2
+  ochl1 = xMgM1*xFeM23**4*xFeM4*xSiT2**2
+  ochl4 = xFeM1*xMgM23**4*xMgM4*xSiT2**2
+  f3clin = 4*xMgM1*xMgM23**4*xFe3M4*xSiT2*xAlT2
+
+ non-ideality by symmetric formalism
+  W(clin,afchl) = 17
+  W(clin,ames) = 17
+  W(clin,daph) = 20
+  W(clin,ochl1) = 30
+  W(clin,ochl4) = 21
+  W(clin,f3clin) = 2
+  W(afchl,ames) = 16
+  W(afchl,daph) = 37
+  W(afchl,ochl1) = 20
+  W(afchl,ochl4) = 4
+  W(afchl,f3clin) = 15
+  W(ames,daph) = 30
+  W(ames,ochl1) = 29
+  W(ames,ochl4) = 13
+  W(ames,f3clin) = 19
+  W(daph,ochl1) = 18
+  W(daph,ochl4) = 33
+  W(daph,f3clin) = 22
+  W(ochl1,ochl4) = 24
+  W(ochl1,f3clin) = 28.6
+  W(ochl4,f3clin) = 19
+
+ "make" end-members
+  ochl1 = afchl - clin + daph + 3  (od)
+  ochl4 = afchl - 1/5*clin + 1/5*daph + 2.4  (od)
+  f3clin = clin - 1/2*gr + 1/2*andr + 40  (make)
+  
+#
+ =================================================================
+ anthophylite
+
+ Proceed with care in ds62+ Do NOT use with clino-amphiboles
+
+ Diener, JFA, Powell, R, White, RW & Holland, TJB (2007) A new thermo-
+ dynamic model for clino- and orthoamphiboles in Na2O-CaO-FeO-MgO-Al2O3-
+ SiO2-H2O-O. Journal of Metamorphic Geology, 25, 631-656.
+ orthoamphibole: NCFMASH: OD
+
+       A         M4                M13       M2            T1
+       v   Na    Ca  Na  Mg  Fe    Mg  Fe    Al  Mg  Fe    Al  Si
+ anth  1   0     0   0   2   0     3   0     0   2   0     0   4
+ ged   1   0     0   0   2   0     3   0     2   0   0     2   2
+ ompa  0   1     0   0   2   0     3   0     1   1   0     2   2
+ omgl  1   0     0   2   0   0     3   0     2   0   0     0   4
+ otr   1   0     2   0   0   0     3   0     0   2   0     0   4
+ fanth 1   0     0   0   0   2     0   3     0   0   2     0   4
+ a     1   0     0   0   0   2     3   0     0   0   2     0   4
+ b     1   0     0   0   0   2     0   3     0   2   0     0   4
+
+                     3 xFeM13 + 2 xFeM2 + 2 xFeM4
+ x -> -----------------------------------------------------------
+      3 xFeM13 + 2 xFeM2 + 2 xFeM4 + 3 xMgM13 + 2 xMgM2 + 2 xMgM4
+
+ y -> xAlM2
+
+ z -> xNaM4
+
+ a -> xNaA
+
+ c -> xCaM4
+
+               xFeM13
+ Q1 -> x - ---------------
+           xFeM13 + xMgM13
+
+               xFeM2
+ Q2 -> x - -------------
+           xFeM2 + xMgM2
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(anth) = 0.45870 range 0 <> 1
+  y(anth) = 0.098330 range 0 <> 1
+  z(anth) = 0.010000 range 0 <> 1
+  a(anth) = 0.010000 range 0 <> 1
+  c(anth) = 0.010000 range 0 <> 1
+  Q1(anth) = 0.14010 range -1 <> 1  order variable
+  Q2(anth) = 0.25070 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  anthophylite : anth : true
+
+ site fractions
+   xvA = 1 - a
+   xNaA = a
+   xCaM4 = c
+   xNaM4 = z
+   xMgM4 = 1 - c - Q2 - x - z - 3/2*Q1 + c*x + Q2*y + x*z
+   xFeM4 = Q2 + x + 3/2*Q1 + (-c)*x + (-Q2)*y + (-x)*z
+   xMgM13 = 1 + Q1 - x
+   xFeM13 = -Q1 + x
+   xAlM2 = y
+   xMgM2 = 1 + Q2 - x - y + (-Q2)*y + x*y
+   xFeM2 = -Q2 + x + Q2*y + (-x)*y
+   xAlT1 = 1/2*y - 1/2*z + 1/4*a
+   xSiT1 = 1 - 1/2*y + 1/2*z - 1/4*a
+
+ proportions
+   anth = 1 - 1/2*a - c - Q2 - x - y - 3/2*Q1 + c*x + Q2*y + x*z
+   gedf = -1/2*a + y - z
+   ompa = a
+   omgl = z
+   otr = c
+   fant = x - 2Q2 - 5/2*Q1 + c*x + 2Q2*y + (-x)*y + x*z
+   a = Q2 + 5/2*Q1 + (-c)*x + (-Q2)*y + (-x)*z
+   b = 2Q2 + 3/2*Q1 + (-c)*x + (-2Q2)*y + x*y + (-x)*z
+
+ ideal mixing activities
+  anth = xvA*xMgM4**2*xMgM13**3*xMgM2**2*xSiT1
+  gedf = 2*xvA*xMgM4**2*xMgM13**3*xAlM2**2*xAlT1**(1/2)*xSiT1**(1/2)
+  ompa = 8*xNaA*xMgM4**2*xMgM13**3*xAlM2*xMgM2*xAlT1**(1/2)*xSiT1**(1/2)
+  omgl = xvA*xNaM4**2*xMgM13**3*xAlM2**2*xSiT1
+  otr = xvA*xCaM4**2*xMgM13**3*xMgM2**2*xSiT1
+  fant = xvA*xFeM4**2*xFeM13**3*xFeM2**2*xSiT1
+  a = xvA*xFeM4**2*xMgM13**3*xFeM2**2*xSiT1
+  b = xvA*xFeM4**2*xFeM13**3*xMgM2**2*xSiT1
+
+ non-ideality by van laar
+  W(anth,gedf) = 25
+  W(anth,ompa) = 25
+  W(anth,omgl) = 65
+  W(anth,otr) = 45
+  W(anth,fant) = 33
+  W(anth,a) = 18
+  W(anth,b) = 23
+  W(gedf,ompa) = -40
+  W(gedf,omgl) = 25
+  W(gedf,otr) = 70
+  W(gedf,fant) = 39.5
+  W(gedf,a) = 29
+  W(gedf,b) = 34.6
+  W(ompa,omgl) = 50
+  W(ompa,otr) = 90
+  W(ompa,fant) = 45
+  W(ompa,a) = 33.2
+  W(ompa,b) = 36
+  W(omgl,otr) = 65
+  W(omgl,fant) = 81.2
+  W(omgl,a) = 65.5
+  W(omgl,b) = 78.4
+  W(otr,fant) = 75
+  W(otr,a) = 57
+  W(otr,b) = 63
+  W(fant,a) = 12
+  W(fant,b) = 8
+  W(a,b) = 20
+
+  v(anth) = 1
+  v(gedf) = 1.5
+  v(ompa) = 1.7
+  v(omgl) = 0.8
+  v(otr) = 1
+  v(fant) = 1
+  v(a) = 1
+  v(b) = 1
+
+ "make" end-members
+  gedf = ged + 22  (make)
+  ompa = parg - tr + anth + 27  (make)
+  omgl = gl + 15  (make)
+  otr = tr
+  fant = fanth + 7  (make)
+  a = 3/7*anth + 4/7*fanth - 5.5  (od)
+  b = 2/7*anth + 5/7*fanth - 6.7  (od)
+  
+#
+ =================================================================
+ anthophyliteb
+
+ Proceed with care in ds62+ Do NOT use with clino-amphiboles
+
+ Diener, JFA, Powell, R, White, RW & Holland, TJB (2007) A new thermo-
+ dynamic model for clino- and orthoamphiboles in Na2O-CaO-FeO-MgO-Al2O3-
+ SiO2-H2O-O. Journal of Metamorphic Geology, 25, 631-656.
+ orthoamphibole: NCFMASH: OD
+
+       A         M4                M13       M2            T1
+       v   Na    Ca  Na  Mg  Fe    Mg  Fe    Al  Mg  Fe    Al  Si
+ anth  1   0     0   0   2   0     3   0     0   2   0     0   4
+ ged   1   0     0   0   2   0     3   0     2   0   0     2   2
+ fanth 1   0     0   0   0   2     0   3     0   0   2     0   4
+ a     1   0     0   0   0   2     3   0     0   0   2     0   4
+ b     1   0     0   0   0   2     0   3     0   2   0     0   4
+
+                     3 xFeM13 + 2 xFeM2 + 2 xFeM4
+ x -> -----------------------------------------------------------
+      3 xFeM13 + 2 xFeM2 + 2 xFeM4 + 3 xMgM13 + 2 xMgM2 + 2 xMgM4
+
+ y -> xAlM2
+
+ z -> xNaM4
+
+ a -> xNaA
+
+ c -> xCaM4
+
+               xFeM13
+ Q1 -> x - ---------------
+           xFeM13 + xMgM13
+
+               xFeM2
+ Q2 -> x - -------------
+           xFeM2 + xMgM2
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(anthb) = 0.45870 range 0 <> 1
+  y(anthb) = 0.098330 range 0 <> 1
+  Q1(anthb) = 0.14010 range -1 <> 1  order variable
+  Q2(anthb) = 0.25070 range -1 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  anthophyliteb : anthb : true
+
+ site fractions
+   xMgM4 = 1  - Q2 - x - 3/2*Q1 + Q2*y
+   xFeM4 = Q2 + x + 3/2*Q1  + (-Q2)*y
+   xMgM13 = 1 + Q1 - x
+   xFeM13 = -Q1 + x
+   xAlM2 = y
+   xMgM2 = 1 + Q2 - x - y + (-Q2)*y + x*y
+   xFeM2 = -Q2 + x + Q2*y + (-x)*y
+   xAlT1 = 1/2*y
+   xSiT1 = 1 - 1/2*y
+   
+ proportions
+   anth = 1  - Q2 - x - y - 3/2*Q1 + Q2*y 
+   gedf = y
+   fant = x - 2Q2 - 5/2*Q1 + 2Q2*y + (-x)*y
+   a = Q2 + 5/2*Q1 + (-Q2)*y
+   b = 2Q2 + 3/2*Q1 + (-2Q2)*y + x*y
+
+ ideal mixing activities
+  anth = xMgM4**2*xMgM13**3*xMgM2**2*xSiT1
+  gedf = 2*xMgM4**2*xMgM13**3*xAlM2**2*xAlT1**(1/2)*xSiT1**(1/2)
+  fant = xFeM4**2*xFeM13**3*xFeM2**2*xSiT1
+  a = xFeM4**2*xMgM13**3*xFeM2**2*xSiT1
+  b = xFeM4**2*xFeM13**3*xMgM2**2*xSiT1
+
+ non-ideality by van laar
+  W(anth,gedf) = 25
+  W(anth,fant) = 33
+  W(anth,a) = 18
+  W(anth,b) = 23
+  W(gedf,fant) = 39.5
+  W(gedf,a) = 29
+  W(gedf,b) = 34.6
+  W(fant,a) = 12
+  W(fant,b) = 8
+  W(a,b) = 20
+
+  v(anth) = 1
+  v(gedf) = 1.5
+  v(fant) = 1
+  v(a) = 1
+  v(b) = 1
+
+ "make" end-members
+  gedf = ged + 22  (make)
+  fant = fanth + 7  (make)
+  a = 3/7*anth + 4/7*fanth - 5.5  (od)
+  b = 2/7*anth + 5/7*fanth - 6.7  (od)
+  
+#
+ =================================================================
+ White R.W., Powell, R. & Clarke, G.L. (2002). The interpretation of reaction
+ textures in Fe-rich metapelitic granulites of the Musgrave Block, central
+ Australia: constraints from mineral equilibria calculations in the system
+ K2O-FeO-MgO-Al2O3-SiO2-H2O-TiO2-Fe2O3. Journal of Metamorphic Geology 20,
+ 41-55.
+
+  E-m    Formula     Mixing sites
+                     M1        M2
+                     Mg  Fe2+ 	Al	Fe3+
+ herc	FeAl2O4     	0  	1		  2		0
+ sp    MgAl2O4    		1  	0		  2		0
+ mt	  Fe3O4			    0  	1		  0		2
+
+ x = Fe2M1/(MgM1 + Fe2M1)
+ y = AlM2/(AlM2 + Fe3M2)
+
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(spi) = 0.98 range 0 <> 1
+  y(spi) = 0.09 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  spinel : sp : true
+
+ site fractions
+   x(Al) = y
+   x(Fe3) = 1 - y
+   x(Mg) = 1 - x
+   x(Fe2) = x
+
+ proportions
+   herc = -1 + y + x
+   sp = 1 - x
+   mt = 1 - y
+
+ ideal mixing activities
+  herc = x(Al)*x(Fe2)
+  sp = x(Al)*x(Mg)
+  mt = x(Fe3)*x(Fe2)
+
+ non-ideality by symmetric formalism
+  W(herc,sp) = 0
+  W(herc,mt) = 18.5
+  W(sp,mt) = 40
+
+#
+ =================================================================
+ opx: FMASO
+
+ rp re-coded by axe attack on 05 July 2013, just without odi or mn
+
+ White, R.W., Powell, R., Holland, T.J.B., Johnson, T.E. and Green, E.C.R. (2014),
+ New mineral activity?composition relations for thermodynamic calculations in
+ metapelitic systems. JMG, 32: 261-286.
+
+         M1                        M2            T
+         Mg    Fe    Fe3   Al      Mg    Fe      Al    Si
+ en      1     0     0     0       1     0       0     2
+ fs      0     1     0     0       0     1       0     2
+ fm      1     0     0     0       0     1       0     2
+ mgts    0     0     0     1       1     0       1     1
+ fopx    0     0     1     0       1     0       1     1
+
+              xFeM1 + xFeM2
+ x -> -----------------------------
+      xFeM1 + xFeM2 + xMgM1 + xMgM2
+
+ y -> xAlM1
+
+ f -> xFe3M1
+
+                  xFeM2
+ Q -> 2 (-x + -------------)
+              xFeM2 + xMgM2
+-------------------------------------------------------------------
+#
+
+ starting guesses
+  x(opx) = 0.30000 range 0 <> 1
+  y(opx) = 0.10000 range 0 <> 1
+  f(opx) = 0.030000 range 0 <> 1
+  Q(opx) = 0.40000 range 0 <> 1  order variable
+  
+ labels (assign first label for which condition is true)
+  orthopyroxene : opx : true
+
+ site fractions
+   xMgM1 = 1 + 1/2*Q - f - x - y + f*x + x*y
+   xFeM1 = -1/2*Q + x + (-f)*x + (-x)*y
+   xFe3M1 = f
+   xAlM1 = y
+   xMgM2 = 1 - 1/2*Q - x
+   xFeM2 = 1/2*Q + x
+   xAlT = 1/2*f + 1/2*y
+   xSiT = 1 - 1/2*f - 1/2*y
+
+ proportions
+   en = 1 - 1/2*Q - f - x - y
+   fs = -1/2*Q + x + (-f)*x + (-x)*y
+   fm = Q + f*x + x*y
+   mgts = y
+   fopx = f
+
+ ideal mixing activities
+  en = xMgM1*xMgM2*xSiT**(1/2)
+  fs = xFeM1*xFeM2*xSiT**(1/2)
+  fm = xMgM1*xFeM2*xSiT**(1/2)
+  mgts = 1.4142*xAlM1*xMgM2*xAlT**(1/4)*xSiT**(1/4)
+  fopx = 1.4142*xFe3M1*xMgM2*xAlT**(1/4)*xSiT**(1/4)
+
+ non-ideality by symmetric formalism
+  W(en,fs) = 7
+  W(en,fm) = 4
+  W(en,mgts) = 13 - 0.15*P
+  W(en,fopx) = 11 - 0.15*P
+  W(fs,fm) = 4
+  W(fs,mgts) = 13 - 0.15*P
+  W(fs,fopx) = 11.6 - 0.15*P
+  W(fm,mgts) = 17 - 0.15*P
+  W(fm,fopx) = 15 - 0.15*P
+  W(mgts,fopx) = 1
+
+ "make" end-members
+  fm = 1/2*en + 1/2*fs - 6.6  (od)
+  fopx = 1/2*andr - 1/2*gr + mgts + 2  (make)
+
+#
+ =================================================================
+ Evans K.A., Powell, R. & Holland, T.J.B. (2010). Internally consistent data
+ for sulphur-bearing phases and application to the construction of
+ pseudosections for mafic greenschist facies rocks in
+ Na2O-CaO-K2O-FeO-MgO-Al2O3-SiO2-CO2-O-S-H2O. JMG 28, 667-687.
+
+ pyrrhotite - a troilite-trov solid solution
+ where the troilite end-member is the hypothetical trot (interstitial free)
+  E-m    Formula     Mixing sites
+                     M2
+                     Fe    	V
+ trov	Fe(7/8)S     	7/8		1/8
+ trot    FeS   		   1		 0
+
+ y = V/Fe + V
+ where V is the vacancy on the M2 site
+
+ -------------------------------------------------------------------
+#
+
+ starting guesses
+  y(po) = 0.10000 range 0 <> 1
+  
+ labels (assign first label for which condition is true)
+  pyrrhotite : po : true
+
+ site fractions
+   xfeM2 = 1 - y
+   xVM2 = y
+
+ proportions
+   trov = 8y
+   trot = 1 - 8y
+
+ ideal mixing activities
+  trov = 1.4576*xfeM2**(7/8)*xVM2**(1/8)
+  trot = xfeM2
+
+ non-ideality by symmetric formalism
+  W(trov,trot) = -3.19
+
+ "make" end-members
