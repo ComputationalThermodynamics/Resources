@@ -7,4 +7,7 @@ This repository stores various resources and support materials used during ``MAG
 
     * Used versions: ``MAGEMin v1.5.1``, ``MAGEMin_C v1.5.5`` and ``MAGEMinApp v0.4.1``
 
-    * <img src="https://raw.githubusercontent.com/ComputationalThermodynamics/repositories_pictures/main/MAGEMinApp/Simon_H2O_solidus_saturated_mb.png" alt="drawing" width="540" alt="centered image"/>
+    <p align="center"><img src="https://raw.githubusercontent.com/ComputationalThermodynamics/repositories_pictures/main/MAGEMinApp/Simon_H2O_solidus_saturated_mb.png" alt="drawing" width="540" alt="centered image"/></p>
+    
+    *Example of P-T phase diagram computed using water saturation at solidus and using the Metabasite database. The water-content at solidus is pressure-dependent and calculated such that the first liquid above solidus is water-saturated (free water is removed). Red isocontour: melt mol fraction*
+    
