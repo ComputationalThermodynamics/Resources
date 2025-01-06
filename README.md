@@ -5,7 +5,7 @@ This repository stores various resources and support materials used during ``MAG
 1. Mainz2025 - ``MAGEMinApp`` introduction shortcourse in Mainz, Germany (Jan, 7, 15, 2025)
     * Set of tutorials on how to use [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl)
 
-    * Used versions: ``MAGEMin v1.6.2``, ``MAGEMin_C v1.6.9`` and ``MAGEMinApp v0.6.2``
+    * Used versions: ``MAGEMin v1.6.3``, ``MAGEMin_C v1.7.0`` and ``MAGEMinApp v0.6.3``
 
 
 2. GG2024 - ``MAGEMin`` workshop at Granulites & Granulites 2024 conference in Verbania, Italy (Sep 3-6, 2024)
