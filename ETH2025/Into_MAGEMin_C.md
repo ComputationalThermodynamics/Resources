@@ -165,29 +165,38 @@ end
 
 ### Exercises
 
-1. Using `plots.jl` and the julia introduction, plot the volume fraction of melt and quartz as function of the temperature
+1. Using `plots.jl` and the julia introduction, plot the volume fraction of melt and quartz as function of the temperature. Note that you can the figure by using 
+```julia
+plot!(size=(400,400))
+savefig("figure.png")
+```
+The first line update the resolution of the plot according to your needs, while the second line effectively save the figure. Note that you can use different output format (`png`,`jpg`,`pdf`)
 
 2. Add to the tlot the volume fraction evolution of `chl`and `bi`
 
-3. Keep the metapelite composition for now. Given a an average geotherm of 10°C/km for a subduction zone create a depth-dependent pressure-temperature path (using 50 steps as before). The starting conditions are 100°C and 10km depth with a maximum depth of 100km. Use a simple relationship to convert depth to pressure such as:
+3. Keep the metapelite composition for now. Given a an average geotherm of 7°C/km for a subduction zone create a depth-dependent pressure-temperature path (using 50 steps as before). The starting conditions are 20°C and 1km depth with a maximum depth of 100km. Use a simple relationship to convert depth to pressure such as:
 
     ```
-    P (GPa) = ρgz / 1e9,
+    P (kbar) = ρgz / 1e8,
     ```
-    where `ρ = 3300.0`, `g = 9.81` and `z` is in meter. Don't forget that pressure in MAGEMin as to be converted to `kbar`
+    where `ρ = 3300.0`, `g = 9.81` and `z` is in meter.
 
-
-    - Plot the evolution of the volume fraction of liquid and free water "H2O". 
+    - Plot the evolution of the volume of free water "H2O". 
     - What needs to be adjusted to make the modelling more realistic?
 
 
 <!-- 
 ```julia
-
-geo = 10.0
-z   = collect(range(10.0,100,n))
+data        =   Initialize_MAGEMin("mp", verbose=true);
+X           = [0.5922, 0.1813, 0.006, 0.0223, 0.0633, 0.0365, 0.0127, 0.0084, 0.0016, 0.0007, 0.075]
+Xoxides     = ["SiO2", "Al2O3", "CaO", "MgO", "FeO", "K2O", "Na2O", "TiO2", "O", "MnO", "H2O"]
+sys_unit    = "wt"
+out         = Vector{MAGEMin_C.gmin_struct{Float64, Int64}}(undef,n)
+n           = 50
+geo = 7.0
+z   = collect(range(1.0,100,n))
 P   = z .* 1000.0 .* 3300 .* 9.81 ./ 1e8
-T   = 100.0 .+ z .* geo
+T   = 20.0 .+ z .* geo
 
 for i=1:n
     T_calc  = T[i]       # retrieves the temperature from the temperature array we just defined  
@@ -200,7 +209,7 @@ end
 
 ## Example with non-constant bulk-rock composition
 
-In previous example, we have seen that excess water can trigger large amount of partial melting. One way to make the model slightly more realistic is by dynamically adjusting the composition at every step by removing excess water from it.
+In previous example, we have seen that excess water was not released during the subduction. One way to make the model more realistic is by dynamically adjusting the composition at every step by removing excess water from it.
 
 This can be be done by modifying your calculation as follow:
 
@@ -218,9 +227,51 @@ end
 > [!NOTE]
 > The previous code snipped has to be placed after calling `single_point_minimization()`
 
-> Mind that for the igneous database, there is a fluid model "fl" instead of pure water.
+> Mind that for the igneous database, there is a fluid model "fl" instead of pure water ("H2O").
 
 
+<!-- 
+```julia
+
+geo = 10.0
+z   = collect(range(10.0,100,n))
+P   = z .* 1000.0 .* 3300 .* 9.81 ./ 1e8
+T   = 100.0 .+ z .* geo
+Xup = copy(X)
+for i=1:n
+    T_calc  = T[i]       # retrieves the temperature from the temperature array we just defined  
+    P_calc  = P[i]
+    out[i]  = single_point_minimization(P_calc, T_calc, data, X=Xup, Xoxides=Xoxides, sys_in=sys_unit)
+
+    if "H2O" in out[i].ph
+        id_h2o      = findfirst(out[i].ph .== "H2O")
+        h2o_wt      = out[i].ph_frac_wt[id_h2o]
+        h2o_comp_wt = out[i].PP_vec[id_h2o - out[i].n_SS].Comp_wt
+
+        Xup         = Xup .- (h2o_wt .* h2o_comp_wt)
+    end
+end
+
+```
+-->
+
+### Exercises
+
+1. First, save a copy of your script. The objective is now to use what we have seen up to now to model eclogite formation using a MORB composition.
+    - Change your calculation to work with the metabasite database "mb" instead of metapelite "mp".
+    - Use the following average MORB composition and oxide list:
+    `X = [0.48395, 0.14244, 0.10512, 0.07863, 0.0899, 0.00333, 0.02483, 0.01288, 0.00361, 0.05531]` and `Xoxides = ["SiO2", "Al2O3", "CaO", "MgO", "FeO", "K2O", "Na2O", "TiO2", "O", "H2O"]`
+    - Use the same PT path as defined in previous example
+    - Compute the PT path while taking care of removing any excess "H2O"
+    - Use the documentation "https://docs.juliaplots.org/latest/gallery/gr/generated/gr-ref058/" to create a stacked area plot of the mineral assemblage evolution. 
+    *Tips: loop through your output and list all observed phases, create a matrix of size (n_phases, n_steps) then loop a second time to attribute fractions in the right place in the matrix.*
+
+
+2. Model the exhumation path of the eclogite to the base of the crust: 100km -> 30km depth assuming isothermal decompression.
+
+3. Plot the stacked area plot of the mineral assemblage evolution.
+
+4. It is well accepted that during the retrograde (exhumation) path, part of the bulk-rock is not effective e.g., garnet cores are not contributing to the effective bulk-rock composition and must be excluded. Modify your script to exclude variable amount of garnet chemistry at the starting point of your exhumation path. How is that controling your mineral assemblage evolution?
 
 <!-- 
 ```julia
