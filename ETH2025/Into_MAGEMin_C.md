@@ -1,5 +1,16 @@
 ## Example of loop phase equilibrium calculation using MAGEMin_C
 
+first add MAGEMin_C
+```julia
+julia> ] add MAGEMin_C
+```
+
+and use MAGEMin_C as:
+
+```julia
+using MAGEMin_C
+```
+
 
 First let's first initialize MAGEMin with the metapelite database (White et al ., 2014)
 
