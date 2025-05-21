@@ -38,7 +38,7 @@ T = 700.0
 and perform the test calculation:
 
 ```julia
-out  = single_point_minimization(P, T, data, X=X, Xoxides=Xoxides, sys_in=sys_unit)
+out  = single_point_minimization(P, T, data, X=X, Xoxides=Xoxides, sys_in=sys_unit, name_solvus = true)
 ```
 
 which should gives:
