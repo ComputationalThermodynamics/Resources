@@ -4,6 +4,19 @@ This repository stores various resources and support materials used during ``MAG
 
 * Note that extended documentation on how to use ``MAGEMinApp.jl`` and ``MAGEMin_C.jl`` is availble [here](https://computationalthermodynamics.github.io/MAGEMin_C.jl/dev/).
 
+4. IAVCEI2025 - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
+    * Installation guide for `MAGEMinApp` and `MAGEMin_C` using julia
+
+    * General introduction about `MAGEMin`
+
+    * Presentation of `MAGEMinApp` interface
+
+    * Examples of bulk input files for `MAGEMinApp`
+
+    * `Julia` tutorial to get started with `MAGEMin_C`
+
+    * Used versions: ``MAGEMin v1.8.0``, ``MAGEMin_C v1.9.6`` and ``MAGEMinApp v1.0.0``
+
 3. MSG2025 - ``MAGEMin`` shortcourse at the Metamorphic Study Group concerence in Liverpool, UK (Apr 8, 2025)
     * Set of tutorials on how to use [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl) online.
 
