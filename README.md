@@ -4,7 +4,7 @@ This repository stores various resources and support materials used during ``MAG
 
 * Note that extended documentation on how to use ``MAGEMinApp.jl`` and ``MAGEMin_C.jl`` is availble [here](https://computationalthermodynamics.github.io/MAGEMin_C.jl/dev/).
 
-4. IAVCEI2025 - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
+5. 2025_Goldschmidt - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
     * Installation guide for `MAGEMinApp` and `MAGEMin_C` using julia
 
     * General introduction about `MAGEMin`
@@ -17,20 +17,33 @@ This repository stores various resources and support materials used during ``MAG
 
     * Used versions: ``MAGEMin v1.8.0``, ``MAGEMin_C v1.9.6`` and ``MAGEMinApp v1.0.0``
 
-3. MSG2025 - ``MAGEMin`` shortcourse at the Metamorphic Study Group concerence in Liverpool, UK (Apr 8, 2025)
+4. 2025_IAVCEI - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
+    * Installation guide for `MAGEMinApp` and `MAGEMin_C` using julia
+
+    * General introduction about `MAGEMin`
+
+    * Presentation of `MAGEMinApp` interface
+
+    * Examples of bulk input files for `MAGEMinApp`
+
+    * `Julia` tutorial to get started with `MAGEMin_C`
+
+    * Used versions: ``MAGEMin v1.8.0``, ``MAGEMin_C v1.9.6`` and ``MAGEMinApp v1.0.0``
+
+3. 2025_MsG - ``MAGEMin`` shortcourse at the Metamorphic Study Group concerence in Liverpool, UK (Apr 8, 2025)
     * Set of tutorials on how to use [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl) online.
 
     * Examples of scripts to perform fractional crystallization and isentropic decompression paths using ``MAGEMin_C.jl``
 
     * Used versions: ``MAGEMin v1.7.3``, ``MAGEMin_C v1.8.3`` and ``MAGEMinApp v0.8.6``
 
-2. Mainz2025 - ``MAGEMinApp`` introduction shortcourse in Mainz, Germany (Jan, 7, 15, 2025)
+2. 2025_Mainz - ``MAGEMinApp`` introduction shortcourse in Mainz, Germany (Jan, 7, 15, 2025)
     * Set of tutorials on how to use [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl)
 
     * Used versions: ``MAGEMin v1.6.3``, ``MAGEMin_C v1.7.0`` and ``MAGEMinApp v0.6.3``
 
 
-1. GG2024 - ``MAGEMin`` workshop at Granulites & Granulites 2024 conference in Verbania, Italy (Sep 3-6, 2024)
+1. 2024_GG - ``MAGEMin`` workshop at Granulites & Granulites 2024 conference in Verbania, Italy (Sep 3-6, 2024)
     * Set of tutorials on how to use [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl) and [``MAGEMin_C``](https://github.com/ComputationalThermodynamics/MAGEMin_C.jl)
 
     * Used versions: ``MAGEMin v1.5.2``, ``MAGEMin_C v1.5.6`` and ``MAGEMinApp v0.4.2``
