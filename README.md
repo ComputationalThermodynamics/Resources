@@ -3,7 +3,7 @@
 This repository stores various resources and support materials used during ``MAGEMin`` shortcourses and workshops. It provides examples on how to use [``MAGEMin``](https://github.com/ComputationalThermodynamics/MAGEMin),  [``MAGEMin_C``](https://github.com/ComputationalThermodynamics/MAGEMin_C.jl) and [``MAGEMinApp``](https://github.com/ComputationalThermodynamics/MAGEMinApp.jl)
 
 * Note that extended documentation on how to use ``MAGEMinApp.jl`` and ``MAGEMin_C.jl`` is availble [here](https://computationalthermodynamics.github.io/MAGEMin_C.jl/dev/).
-1) 2025_Goldschmidt - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
+1) 2025_Goldschmidt - ``MAGEMin``shortcourse at Goldschmidt conference in Prague, Czech republic (Jul 6, 2025)
     * Installation guide for `MAGEMinApp` and `MAGEMin_C` using julia
 
     * General introduction about `MAGEMin`
@@ -16,7 +16,7 @@ This repository stores various resources and support materials used during ``MAG
 
     * Used versions: ``MAGEMin v1.8.0``, ``MAGEMin_C v1.9.6`` and ``MAGEMinApp v1.0.0``
 
-2) 2025_IAVCEI - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 4, 2025)
+2) 2025_IAVCEI - ``MAGEMin``shortcourse at IAVCEI conference in Geneva, Switzerland (Jul 5, 2025)
     * Installation guide for `MAGEMinApp` and `MAGEMin_C` using julia
 
     * General introduction about `MAGEMin`
